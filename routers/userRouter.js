@@ -79,7 +79,7 @@ userRouter.post('/login', async (req, res) => {
 
         if (!isMatched) throw Error('wrongn username or password'); // if password not matched
         // if matched .. generate token for that user to be used in website
-        var token = await jwt.sign({ id: user._id }, 'verySecret');
+        var token = await jwt.sign({ id: user._id }, process.env.hush);
 
         res.statusCode = 200
         // give user this token in his local storage to be identified every time he go through all
@@ -108,8 +108,8 @@ userRouter.use((req, res, next) => {
             res.status(401).json({ error: "authentication failed" })
         }
 
-        // verify token by secret 'verySecret' created with token when user logged in
-        var user = jwt.verify(authorization, 'verySecret', function (err, userTokenSignature) {
+        // verify token by secret process.env.hush created with token when user logged in
+        var user = jwt.verify(authorization, process.env.hush, function (err, userTokenSignature) {
 
             if (err == { Error: "jwt malformed" }) {
                 // err.message = "user doesn't exist"
@@ -226,7 +226,7 @@ userRouter.patch('/password', async (req, res) => {
 //         const { authorization } = req.headers
 
 //         // get id from token signature
-//         var user = await jwt.verify(authorization, 'verySecret');
+//         var user = await jwt.verify(authorization, process.env.hush);
 
 //         // check if id in paramater is not same as id in token
 //         if (!(id == user.id)) throw Error("you can't delete user with that id because it isn't your id");

@@ -48,7 +48,7 @@ todoRouter.use((req, res, next) => {
         }
 
         //get id from token signature
-        var user = jwt.verify(authorization, 'verySecret', function (err, userTokenSignature) {
+        var user = jwt.verify(authorization, process.env.hush, function (err, userTokenSignature) {
 
             if (!userTokenSignature) throw Error('authentication failed') // if user not exists throw error
 
